@@ -1,6 +1,6 @@
 // When pricing updates change we will need to update these functions. If this site succeeds I plan on site to have a system where someone can easily create github issue with updated pricing or something?
 // Ideally though these price changes shouldn't happen too often but I will do my best to keep this update to date.
-
+ 
 import type { PricingBreakdown } from "../shared/types";
 
 
