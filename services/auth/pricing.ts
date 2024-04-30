@@ -275,7 +275,7 @@ export function calculateFusionAuthEssentialsCost(users: number): number {
         "$0.07 per MAU beyond 7,500 users (B2C Essentials plan)",
       ],
       "FusionAuth Community": [
-        "$37 a month for Basic hosting (self hosting is also an option)",
+        "$37 a month for FusionAuth Basic hosting (self hosting is also an option)",
         "Community Edition is free for unlimited MAUs",
       ],
       "FusionAuth Essentials": [
@@ -284,7 +284,7 @@ export function calculateFusionAuthEssentialsCost(users: number): number {
         "$175 per additional 10,000 MAUs up to 100,000",
         "$100 per additional 10,000 MAUs up to 1,000,000",
         "$20 per additional 10,000 MAUs beyond 1,000,000",
-        "Hosting is an additional cost (e.g., $37/month for Basic hosting), self-hosting is also an option",
+        "Hosting is an additional cost (e.g., $37/month for FusionAuth Basic hosting), self-hosting is also an option",
       ],
       // Add other services here as needed
     };
