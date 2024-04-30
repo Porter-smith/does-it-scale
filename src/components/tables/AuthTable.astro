@@ -1,0 +1,117 @@
+---
+import AuthLink from "../Link.astro";
+import { pricingBreakdown, prices } from "@services/auth/pricing";
+import { EDIT_EMAIL } from "@/constants";
+---
+
+<div class="overflow-x-auto max-w-full mx-auto">
+    <table
+        class="w-full text-sm text-foreground bg-card border-collapse max-w-[1000px] rounded-lg p-4"
+    >
+        <thead class="text-xs uppercase text-popover-foreground">
+            <tr>
+                <th scope="col" class="py-3 px-6">Service</th>
+                <th scope="col" class="py-3 px-6">5k Users</th>
+                <th scope="col" class="py-3 px-6">10k Users</th>
+                <th scope="col" class="py-3 px-6">50k Users</th>
+                <th scope="col" class="py-3 px-6">100k Users</th>
+                <th scope="col" class="py-3 px-6">1M Users</th>
+                <th scope="col" class="py-3 px-6">2M Users</th>
+                <th scope="col" class="py-3 px-6">Pricing Page</th>
+                <th scope="col" class="py-3 px-6">Pricing Breakdown</th>
+                <th scope="col" class="py-3 px-6">Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+            {
+                prices.map((service) => (
+                    <tr class="bg-card border-b border-border">
+                        <th
+                            scope="row"
+                            class="py-4 px-6 font-medium text-foreground whitespace-nowrap"
+                        >
+                            <AuthLink
+                                iconName={service.iconName}
+                                name={service.service}
+                            />
+                        </th>
+                        <td class="py-4 px-6">
+                            ${service.users5k.toLocaleString()}
+                        </td>
+                        <td class="py-4 px-6">
+                            ${service.users10k.toLocaleString()}
+                        </td>
+                        <td class="py-4 px-6">
+                            ${service.users50k.toLocaleString()}
+                        </td>
+                        <td class="py-4 px-6">
+                            ${service.users100k.toLocaleString()}
+                        </td>
+                        <td class="py-4 px-6">
+                            ${service.users1m.toLocaleString()}
+                        </td>
+                        <td class="py-4 px-6">
+                            ${service.users2m.toLocaleString()}
+                        </td>
+                        <td class="py-4 px-6">
+                            <a
+                                href={service.pricingPage}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="btn"
+                            >
+                                Visit Pricing Page
+                            </a>
+                        </td>
+                        <td class="py-4 px-6">
+                            <button
+                                class="pricing-breakdown btn"
+                                data-service={service.service}
+                                onclick={`document.getElementById('${service.service}-modal').showModal()`}
+                            >
+                                Show Breakdown
+                            </button>
+                        </td>
+                        <td class="py-4 px-6">
+                            <a
+                                href={EDIT_EMAIL}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="btn"
+                            >
+                                <i class="fas fa-pencil-alt" />
+                            </a>
+                        </td>
+                    </tr>
+                ))
+            }
+        </tbody>
+    </table>
+</div>
+
+{prices.map((service) => (
+    <dialog id={`${service.service}-modal`} class="modal">
+        <div class="modal-box">
+            <h2 class="font-bold text-lg">Pricing Breakdown for {service.service}</h2>
+            <ul class="py-4">
+                {pricingBreakdown[service.service].map((item) => (
+                    <li>{item}</li>
+                ))}
+            </ul>
+            <form method="dialog" class="modal-backdrop">
+                <button class="btn">Close</bu            </form>
+        </div>
+    </dialog>
+))}
+
+<script>
+    // Close the modal when clicking outside the modal content
+    const modals = document.querySelectorAll('.modal');
+    modals.forEach((modal) => {
+        window.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                modal.close();
+            }
+        });
+    });
+</script>
