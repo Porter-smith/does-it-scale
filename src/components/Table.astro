@@ -1,6 +1,6 @@
 ---
 import AuthLink from "./Link.astro";
-import { emailPrices } from "@services/email/pricing";
+import { emailPrices, emailPricingBreakdown } from "@services/email/pricing";
 import { EDIT_EMAIL } from "@/constants";
 ---
 
@@ -67,7 +67,7 @@ import { EDIT_EMAIL } from "@/constants";
                             <button
                                 class="pricing-breakdown btn"
                                 data-service={service.service}
-                                onclick="pricingModal.showModal()"
+                                onclick={`document.getElementById('${service.service}-modal').showModal()`}
                             >
                                 Show Breakdown
                             </button>
@@ -89,61 +89,29 @@ import { EDIT_EMAIL } from "@/constants";
     </table>
 </div>
 
-<dialog id="pricingModal" class="modal">
-    <div class="modal-box">
-        <h2 class="font-bold text-lg"></h2>
-        <ul class="py-4"></ul>
-        <form method="dialog" class="modal-backdrop">
-            <button class="btn">Close</button>
-        </form>
-    </div>
-</dialog>
+{emailPrices.map((service) => (
+    <dialog id={`${service.service}-modal`} class="modal">
+        <div class="modal-box">
+            <h2 class="font-bold text-lg">Pricing Breakdown for {service.service}</h2>
+            <ul class="py-4">
+                {emailPricingBreakdown[service.service].map((item) => (
+                    <li>{item}</li>
+                ))}
+            </ul>
+            <form method="dialog" class="modal-backdrop">
+                <button class="btn">Close</bu            </form>
+        </div>
+    </dialog>
+))}
+
 <script>
-    import { emailPricingBreakdown } from "@services/email/pricing";
-
-    const modal = document.querySelector(
-        "#pricingModal",
-    ) as HTMLDialogElement | null;
-
-    if (modal) {
-        const buttons = document.querySelectorAll(
-            "button.pricing-breakdown",
-        ) as NodeListOf<HTMLElement>;
-
-        // Handle clicks on each button.
-        buttons.forEach((button) => {
-            button.addEventListener("click", () => {
-                const service = button.dataset.service; // This is potentially undefined
-                if (!service) {
-                    console.error("Service data not found on button.");
-                    return; // Early return to stop execution if service is undefined
-                }
-
-                const breakdown = emailPricingBreakdown[service];
-                if (breakdown) {
-                    const h2Element = modal.querySelector("h2");
-                    const ulElement = modal.querySelector("ul");
-                    if (h2Element && ulElement) {
-                        h2Element.textContent = `Pricing Breakdown for ${service}`;
-                        ulElement.innerHTML = breakdown
-                            .map((item: string) => `<li>${item}</li>`)
-                            .join("");
-                    } else {
-                        console.error("Modal elements are missing.");
-                    }
-                } else {
-                    console.error("Breakdown not found for service:", service);
-                }
-            });
-        });
-
-        // Close the modal when clicking outside the modal content
-        window.addEventListener("click", (event) => {
+    // Close the modal when clicking outside the modal content
+    const modals = document.querySelectorAll('.modal');
+    modals.forEach((modal) => {
+        window.addEventListener('click', (event) => {
             if (event.target === modal) {
                 modal.close();
             }
         });
-    } else {
-        console.error("Modal not found in the document.");
-    }
+    });
 </script>

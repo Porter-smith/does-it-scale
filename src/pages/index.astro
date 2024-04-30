@@ -1,12 +1,10 @@
 ---
 import "@/css/global.css";
-import Table from "@/components/Table.astro";
+import EmailTable from "../components/Table.astro";
 interface Props {
 	title: string;
 	description: string;
 }
-
-const { title, description } = Astro.props;
 ---
 
 <!doctype html>
@@ -22,6 +20,19 @@ const { title, description } = Astro.props;
 			crossorigin="anonymous"></script>
 	</head>
 	<body class="dark">
-		<Table />
+		<div
+			class="flex justify-center mt-[200px] gap-[50px] lg:gap-[200px] lg:flex-row flex-col px-3"
+		>
+			<div>
+				<h3>Authentication</h3>
+				<h4>You shall not pass!</h4>
+			</div>
+			<div
+				class="w-full p-4 grid place-items-center"
+				style="margin-left: auto; margin-right: auto;"
+			>
+				<EmailTable />
+			</div>
+		</div>
 	</body>
 </html>
