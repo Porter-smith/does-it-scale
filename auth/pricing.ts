@@ -133,7 +133,7 @@ export interface ServicePrice {
     
       return cost;
     }
-    
+    // Test
     export const prices: ServicePrice[] = [
       {
         service: "Firebase Auth",
