@@ -133,6 +133,52 @@ export interface ServicePrice {
     
       return cost;
     }
+
+
+    // https://fusionauth.io/pricing?step=plan&hosting=self-hosting
+    export function calculateFusionAuthCommunityCost(users: number): number {
+      let cost = 0;    
+      return cost;
+    }
+
+    export function calculateFusionAuthEssentialsCost(users: number): number {
+      const n = "pricePerUnitMonthly";
+      const i = {
+        "annualDiscountPercentage": 0.07,
+        "base": {
+          "maximumUserCount": 10000,
+          "minimumUserCount": 0,
+          "pricePerUnitMonthly": 850,
+          "pricePerUnitYearly": 9480
+        },
+        "tier2": {
+          "maximumUserCount": 100000,
+          "minimumUserCount": 10001,
+          "pricePerUnitMonthly": 175,
+          "pricePerUnitYearly": 1951.76
+        },
+        "tier3": {
+          "maximumUserCount": 1000000,
+          "minimumUserCount": 100001,
+          "pricePerUnitMonthly": 100,
+          "pricePerUnitYearly": 1115.29
+        },
+        "tier4": {
+          "maximumUserCount": -1,
+          "minimumUserCount": 1000001,
+          "pricePerUnitMonthly": 20,
+          "pricePerUnitYearly": 223.06
+        }
+      }
+      const s = users / 1e4;
+      const t = 12 * i.base.pricePerUnitMonthly;
+      const e = i.base.pricePerUnitYearly;
+
+      const mauPrice = s < 10 ? i.tier2[n] * (s - 1) : s < 100 ? 9 * i.tier2[n] + i.tier3[n] * (s - 10) : 9 * i.tier2[n] + 90 * i.tier3[n] + i.tier4[n] * (s - 100);
+      const discount = Math.round(100 * (t - e) / t); // not sure this applies
+      const planPrice = i.base[n];
+      return planPrice + mauPrice;
+    }
     export const prices: ServicePrice[] = [
       {
         service: "Firebase Auth",
@@ -182,6 +228,8 @@ export interface ServicePrice {
         color: "#272727",
         pricingPage: "https://auth0.com/pricing", // Add this line
       },
+      
+      
       // Add other services here as previously defined
     ];
     // TODO: Have it use the values from variables so don't have to update it each time

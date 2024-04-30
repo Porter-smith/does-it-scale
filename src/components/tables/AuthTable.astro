@@ -1,6 +1,6 @@
 ---
-import AuthLink from "./Link.astro";
-import { emailPrices, emailPricingBreakdown } from "@services/email/pricing";
+import AuthLink from "../Link.astro";
+import { pricingBreakdown, prices } from "@services/auth/pricing";
 import { EDIT_EMAIL } from "@/constants";
 ---
 
@@ -11,12 +11,12 @@ import { EDIT_EMAIL } from "@/constants";
         <thead class="text-xs uppercase text-popover-foreground">
             <tr>
                 <th scope="col" class="py-3 px-6">Service</th>
-                <th scope="col" class="py-3 px-6">5k Emails</th>
-                <th scope="col" class="py-3 px-6">10k Emails</th>
-                <th scope="col" class="py-3 px-6">50k Emails</th>
-                <th scope="col" class="py-3 px-6">100k Emails</th>
-                <th scope="col" class="py-3 px-6">1M Emails</th>
-                <th scope="col" class="py-3 px-6">2M Emails</th>
+                <th scope="col" class="py-3 px-6">5k Users</th>
+                <th scope="col" class="py-3 px-6">10k Users</th>
+                <th scope="col" class="py-3 px-6">50k Users</th>
+                <th scope="col" class="py-3 px-6">100k Users</th>
+                <th scope="col" class="py-3 px-6">1M Users</th>
+                <th scope="col" class="py-3 px-6">2M Users</th>
                 <th scope="col" class="py-3 px-6">Pricing Page</th>
                 <th scope="col" class="py-3 px-6">Pricing Breakdown</th>
                 <th scope="col" class="py-3 px-6">Edit</th>
@@ -24,7 +24,7 @@ import { EDIT_EMAIL } from "@/constants";
         </thead>
         <tbody>
             {
-                emailPrices.map((service) => (
+                prices.map((service) => (
                     <tr class="bg-card border-b border-border">
                         <th
                             scope="row"
@@ -36,22 +36,22 @@ import { EDIT_EMAIL } from "@/constants";
                             />
                         </th>
                         <td class="py-4 px-6">
-                            ${service.emails5k.toLocaleString()}
+                            ${service.users5k.toLocaleString()}
                         </td>
                         <td class="py-4 px-6">
-                            ${service.emails10k.toLocaleString()}
+                            ${service.users10k.toLocaleString()}
                         </td>
                         <td class="py-4 px-6">
-                            ${service.emails50k.toLocaleString()}
+                            ${service.users50k.toLocaleString()}
                         </td>
                         <td class="py-4 px-6">
-                            ${service.emails100k.toLocaleString()}
+                            ${service.users100k.toLocaleString()}
                         </td>
                         <td class="py-4 px-6">
-                            ${service.emails1m.toLocaleString()}
+                            ${service.users1m.toLocaleString()}
                         </td>
                         <td class="py-4 px-6">
-                            ${service.emails2m.toLocaleString()}
+                            ${service.users2m.toLocaleString()}
                         </td>
                         <td class="py-4 px-6">
                             <a
@@ -89,12 +89,12 @@ import { EDIT_EMAIL } from "@/constants";
     </table>
 </div>
 
-{emailPrices.map((service) => (
+{prices.map((service) => (
     <dialog id={`${service.service}-modal`} class="modal">
         <div class="modal-box">
             <h2 class="font-bold text-lg">Pricing Breakdown for {service.service}</h2>
             <ul class="py-4">
-                {emailPricingBreakdown[service.service].map((item) => (
+                {pricingBreakdown[service.service].map((item) => (
                     <li>{item}</li>
                 ))}
             </ul>
