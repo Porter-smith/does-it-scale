@@ -36,6 +36,7 @@ To add a new auth provider:
 3. Implement the pricing logic based on the provider's pricing model.
 4. Add a new entry to the `prices` array with the service name, icon, pricing data, color, and pricing page URL.
 5. Add a new entry to the `pricingBreakdown` object with the pricing details for the new provider.
+6. Add the icon to the `src/icons` you specifed in the prices array 
 6. Submit a pull request with your changes.
 
 Example:
