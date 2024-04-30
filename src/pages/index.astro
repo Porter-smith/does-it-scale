@@ -1,16 +1,27 @@
 ---
+import "@/css/global.css";
+import Table from "@/components/Table.astro";
+interface Props {
+	title: string;
+	description: string;
+}
 
+const { title, description } = Astro.props;
 ---
 
-<html lang="en">
+<!doctype html>
+<html lang="en" data-theme="business">
 	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
+		<script
+			defer
+			src="https://kit.fontawesome.com/d68c1e9ba0.js"
+			crossorigin="anonymous"></script>
 	</head>
-	<body>
-		<h1>Astro</h1>
+	<body class="dark">
+		<Table />
 	</body>
 </html>

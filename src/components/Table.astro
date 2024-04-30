@@ -1,0 +1,149 @@
+---
+import AuthLink from "./Link.astro";
+import { emailPrices } from "@services/email/pricing";
+import { EDIT_EMAIL } from "@/constants";
+---
+
+<div class="overflow-x-auto max-w-full mx-auto">
+    <table
+        class="w-full text-sm text-foreground bg-card border-collapse max-w-[1000px] rounded-lg p-4"
+    >
+        <thead class="text-xs uppercase text-popover-foreground">
+            <tr>
+                <th scope="col" class="py-3 px-6">Service</th>
+                <th scope="col" class="py-3 px-6">5k Emails</th>
+                <th scope="col" class="py-3 px-6">10k Emails</th>
+                <th scope="col" class="py-3 px-6">50k Emails</th>
+                <th scope="col" class="py-3 px-6">100k Emails</th>
+                <th scope="col" class="py-3 px-6">1M Emails</th>
+                <th scope="col" class="py-3 px-6">2M Emails</th>
+                <th scope="col" class="py-3 px-6">Pricing Page</th>
+                <th scope="col" class="py-3 px-6">Pricing Breakdown</th>
+                <th scope="col" class="py-3 px-6">Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+            {
+                emailPrices.map((service) => (
+                    <tr class="bg-card border-b border-border">
+                        <th
+                            scope="row"
+                            class="py-4 px-6 font-medium text-foreground whitespace-nowrap"
+                        >
+                            <AuthLink
+                                iconName={service.iconName}
+                                name={service.service}
+                            />
+                        </th>
+                        <td class="py-4 px-6">
+                            ${service.emails5k.toLocaleString()}
+                        </td>
+                        <td class="py-4 px-6">
+                            ${service.emails10k.toLocaleString()}
+                        </td>
+                        <td class="py-4 px-6">
+                            ${service.emails50k.toLocaleString()}
+                        </td>
+                        <td class="py-4 px-6">
+                            ${service.emails100k.toLocaleString()}
+                        </td>
+                        <td class="py-4 px-6">
+                            ${service.emails1m.toLocaleString()}
+                        </td>
+                        <td class="py-4 px-6">
+                            ${service.emails2m.toLocaleString()}
+                        </td>
+                        <td class="py-4 px-6">
+                            <a
+                                href={service.pricingPage}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="btn"
+                            >
+                                Visit Pricing Page
+                            </a>
+                        </td>
+                        <td class="py-4 px-6">
+                            <button
+                                class="pricing-breakdown btn"
+                                data-service={service.service}
+                                onclick="pricingModal.showModal()"
+                            >
+                                Show Breakdown
+                            </button>
+                        </td>
+                        <td class="py-4 px-6">
+                            <a
+                                href={EDIT_EMAIL}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="btn"
+                            >
+                                <i class="fas fa-pencil-alt" />
+                            </a>
+                        </td>
+                    </tr>
+                ))
+            }
+        </tbody>
+    </table>
+</div>
+
+<dialog id="pricingModal" class="modal">
+    <div class="modal-box">
+        <h2 class="font-bold text-lg"></h2>
+        <ul class="py-4"></ul>
+        <form method="dialog" class="modal-backdrop">
+            <button class="btn">Close</button>
+        </form>
+    </div>
+</dialog>
+<script>
+    import { emailPricingBreakdown } from "@services/email/pricing";
+
+    const modal = document.querySelector(
+        "#pricingModal",
+    ) as HTMLDialogElement | null;
+
+    if (modal) {
+        const buttons = document.querySelectorAll(
+            "button.pricing-breakdown",
+        ) as NodeListOf<HTMLElement>;
+
+        // Handle clicks on each button.
+        buttons.forEach((button) => {
+            button.addEventListener("click", () => {
+                const service = button.dataset.service; // This is potentially undefined
+                if (!service) {
+                    console.error("Service data not found on button.");
+                    return; // Early return to stop execution if service is undefined
+                }
+
+                const breakdown = emailPricingBreakdown[service];
+                if (breakdown) {
+                    const h2Element = modal.querySelector("h2");
+                    const ulElement = modal.querySelector("ul");
+                    if (h2Element && ulElement) {
+                        h2Element.textContent = `Pricing Breakdown for ${service}`;
+                        ulElement.innerHTML = breakdown
+                            .map((item: string) => `<li>${item}</li>`)
+                            .join("");
+                    } else {
+                        console.error("Modal elements are missing.");
+                    }
+                } else {
+                    console.error("Breakdown not found for service:", service);
+                }
+            });
+        });
+
+        // Close the modal when clicking outside the modal content
+        window.addEventListener("click", (event) => {
+            if (event.target === modal) {
+                modal.close();
+            }
+        });
+    } else {
+        console.error("Modal not found in the document.");
+    }
+</script>
