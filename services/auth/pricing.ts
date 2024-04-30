@@ -135,10 +135,10 @@ export interface ServicePrice {
     }
 
 
-    // https://fusionauth.io/pricing?step=plan&hosting=self-hosting
+    // https://fusionauth.io/pricing?step=plan&hosting=basic-cloud
     export function calculateFusionAuthCommunityCost(users: number): number {
-      let cost = 0;    
-      return cost;
+      const basicHostingCost = 37; // $37 per month for Basic hosting
+      return basicHostingCost;
     }
 
     export function calculateFusionAuthEssentialsCost(users: number): number {
@@ -156,6 +156,8 @@ export interface ServicePrice {
           pricePerUnitMonthly: 20,
         },
       };
+    
+      const basicHostingCost = 37; // $37 per month for Basic hosting
       
       const s = users / 10000;
       const planPrice = i.base.pricePerUnitMonthly;
@@ -171,7 +173,7 @@ export interface ServicePrice {
         mauPrice = 9 * i.tier2.pricePerUnitMonthly + 90 * i.tier3.pricePerUnitMonthly + i.tier4.pricePerUnitMonthly * (s - 100);
       }
     
-      return planPrice + mauPrice;
+      return planPrice + mauPrice + basicHostingCost;
     }
     export const prices: ServicePrice[] = [
       {
@@ -232,7 +234,7 @@ export interface ServicePrice {
         users1m: calculateFusionAuthCommunityCost(1000000),
         users2m: calculateFusionAuthCommunityCost(2000000),
         color: "#f58320",
-        pricingPage: "https://fusionauth.io/pricing?step=plan&hosting=self-hosting",
+        pricingPage: "https://fusionauth.io/pricing?step=plan&hosting=basic-cloud",
       },
       {
         service: "FusionAuth Essentials",
@@ -244,7 +246,7 @@ export interface ServicePrice {
         users1m: calculateFusionAuthEssentialsCost(1000000),
         users2m: calculateFusionAuthEssentialsCost(2000000),
         color: "#0ea5e9",
-        pricingPage: "https://fusionauth.io/pricing?step=hosting",
+        pricingPage: "https://fusionauth.io/pricing?step=plan&hosting=basic-cloud",
       },
       
       
@@ -275,11 +277,16 @@ export interface ServicePrice {
         "$0.07 per MAU beyond 7,500 users (B2C Essentials plan)",
       ],
       "FusionAuth Community": [
+        "$37 a month for Basic hosting (self hosting is also an option)",
         "Community Edition is free for unlimited MAUs",
       ],
       "FusionAuth Essentials": [
         "Free for up to 10,000 MAUs",
-        "*Pricing varies beyond, highly suggest calling sales",
+        "$850 base fee per month",
+        "$175 per additional 10,000 MAUs up to 100,000",
+        "$100 per additional 10,000 MAUs up to 1,000,000",
+        "$20 per additional 10,000 MAUs beyond 1,000,000",
+        "Hosting is an additional cost (e.g., $37/month for Basic hosting), self-hosting is also an option",
       ],
       // Add other services here as needed
     };
