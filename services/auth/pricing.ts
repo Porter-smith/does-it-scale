@@ -135,46 +135,44 @@ export interface ServicePrice {
     }
 
 
-    // https://fusionauth.io/pricing?step=plan&hosting=basic-cloud
-    export function calculateFusionAuthCommunityCost(users: number): number {
-      const basicHostingCost = 37; // $37 per month for Basic hosting
-      return basicHostingCost;
-    }
+ 
+// https://fusionauth.io/pricing?step=plan&hosting=basic-cloud
+// Updated: 4/30/24
+export function calculateFusionAuthCommunityCost(users: number): number {
+  const basicHostingCost = 37; // $37 per month for Basic hosting
+  return basicHostingCost;
+}
 
-    export function calculateFusionAuthEssentialsCost(users: number): number {
-      const i = {
-        base: {
-          pricePerUnitMonthly: 850,
-        },
-        tier2: {
-          pricePerUnitMonthly: 175,
-        },
-        tier3: {
-          pricePerUnitMonthly: 100,
-        },
-        tier4: {
-          pricePerUnitMonthly: 20,
-        },
-      };
-    
-      const basicHostingCost = 37; // $37 per month for Basic hosting
-      
-      const s = users / 10000;
-      const planPrice = i.base.pricePerUnitMonthly;
-    
-      let mauPrice = 0;
-      if (s <= 1) {
-        mauPrice = 0;
-      } else if (s <= 10) {
-        mauPrice = i.tier2.pricePerUnitMonthly * (s - 1);
-      } else if (s <= 100) {
-        mauPrice = 9 * i.tier2.pricePerUnitMonthly + i.tier3.pricePerUnitMonthly * (s - 10);
-      } else {
-        mauPrice = 9 * i.tier2.pricePerUnitMonthly + 90 * i.tier3.pricePerUnitMonthly + i.tier4.pricePerUnitMonthly * (s - 100);
-      }
-    
-      return planPrice + mauPrice + basicHostingCost;
+// https://fusionauth.io/pricing?step=plan&hosting=basic-cloud
+// Updated: 4/30/24
+export function calculateFusionAuthEssentialsCost(users: number): number {
+  const freeLimit = 10000; // Free for up to 10,000 MAUs
+  const baseCost = 850; // $850 base fee per month
+  const rate10kTo100k = 175; // $175 per additional 10,000 MAUs up to 100,000
+  const rate100kTo1m = 100; // $100 per additional 10,000 MAUs up to 1,000,000
+  const rateAbove1m = 20; // $20 per additional 10,000 MAUs beyond 1,000,000
+  const basicHostingCost = 37; // $37 per month for Basic hosting
+
+  let cost = baseCost;
+  let mauPrice = 0;
+
+  if (users > freeLimit) {
+    const s = (users - freeLimit) / 10000;
+
+    if (s <= 9) {
+      mauPrice = rate10kTo100k * s;
+    } else if (s <= 99) {
+      mauPrice = 9 * rate10kTo100k + rate100kTo1m * (s - 9);
+    } else {
+      mauPrice = 9 * rate10kTo100k + 90 * rate100kTo1m + rateAbove1m * (s - 99);
     }
+  }
+
+  cost += mauPrice;
+  cost += basicHostingCost;
+
+  return cost;
+}
     export const prices: ServicePrice[] = [
       {
         service: "Firebase Auth",
