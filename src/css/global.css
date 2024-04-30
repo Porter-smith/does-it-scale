@@ -87,5 +87,11 @@ h3 {
     @apply bg-background;
   }
 }
+/* Quick fix to make some icons bigger  */
+[data-icon="fusionauth"] {
+  width: 26px;
+  height: 26px;
+}
+
 
 

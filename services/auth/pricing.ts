@@ -142,41 +142,35 @@ export interface ServicePrice {
     }
 
     export function calculateFusionAuthEssentialsCost(users: number): number {
-      const n = "pricePerUnitMonthly";
       const i = {
-        "annualDiscountPercentage": 0.07,
-        "base": {
-          "maximumUserCount": 10000,
-          "minimumUserCount": 0,
-          "pricePerUnitMonthly": 850,
-          "pricePerUnitYearly": 9480
+        base: {
+          pricePerUnitMonthly: 850,
         },
-        "tier2": {
-          "maximumUserCount": 100000,
-          "minimumUserCount": 10001,
-          "pricePerUnitMonthly": 175,
-          "pricePerUnitYearly": 1951.76
+        tier2: {
+          pricePerUnitMonthly: 175,
         },
-        "tier3": {
-          "maximumUserCount": 1000000,
-          "minimumUserCount": 100001,
-          "pricePerUnitMonthly": 100,
-          "pricePerUnitYearly": 1115.29
+        tier3: {
+          pricePerUnitMonthly: 100,
         },
-        "tier4": {
-          "maximumUserCount": -1,
-          "minimumUserCount": 1000001,
-          "pricePerUnitMonthly": 20,
-          "pricePerUnitYearly": 223.06
-        }
+        tier4: {
+          pricePerUnitMonthly: 20,
+        },
+      };
+      
+      const s = users / 10000;
+      const planPrice = i.base.pricePerUnitMonthly;
+    
+      let mauPrice = 0;
+      if (s <= 1) {
+        mauPrice = 0;
+      } else if (s <= 10) {
+        mauPrice = i.tier2.pricePerUnitMonthly * (s - 1);
+      } else if (s <= 100) {
+        mauPrice = 9 * i.tier2.pricePerUnitMonthly + i.tier3.pricePerUnitMonthly * (s - 10);
+      } else {
+        mauPrice = 9 * i.tier2.pricePerUnitMonthly + 90 * i.tier3.pricePerUnitMonthly + i.tier4.pricePerUnitMonthly * (s - 100);
       }
-      const s = users / 1e4;
-      const t = 12 * i.base.pricePerUnitMonthly;
-      const e = i.base.pricePerUnitYearly;
-
-      const mauPrice = s < 10 ? i.tier2[n] * (s - 1) : s < 100 ? 9 * i.tier2[n] + i.tier3[n] * (s - 10) : 9 * i.tier2[n] + 90 * i.tier3[n] + i.tier4[n] * (s - 100);
-      const discount = Math.round(100 * (t - e) / t); // not sure this applies
-      const planPrice = i.base[n];
+    
       return planPrice + mauPrice;
     }
     export const prices: ServicePrice[] = [
@@ -228,6 +222,30 @@ export interface ServicePrice {
         color: "#272727",
         pricingPage: "https://auth0.com/pricing", // Add this line
       },
+      {
+        service: "FusionAuth Community",
+        iconName: "fusionauth",
+        users5k: calculateFusionAuthCommunityCost(5000),
+        users10k: calculateFusionAuthCommunityCost(10000),
+        users50k: calculateFusionAuthCommunityCost(50000),
+        users100k: calculateFusionAuthCommunityCost(100000),
+        users1m: calculateFusionAuthCommunityCost(1000000),
+        users2m: calculateFusionAuthCommunityCost(2000000),
+        color: "#f58320",
+        pricingPage: "https://fusionauth.io/pricing?step=plan&hosting=self-hosting",
+      },
+      {
+        service: "FusionAuth Essentials",
+        iconName: "fusionauth",
+        users5k: calculateFusionAuthEssentialsCost(5000),
+        users10k: calculateFusionAuthEssentialsCost(10000),
+        users50k: calculateFusionAuthEssentialsCost(50000),
+        users100k: calculateFusionAuthEssentialsCost(100000),
+        users1m: calculateFusionAuthEssentialsCost(1000000),
+        users2m: calculateFusionAuthEssentialsCost(2000000),
+        color: "#0ea5e9",
+        pricingPage: "https://fusionauth.io/pricing?step=hosting",
+      },
       
       
       // Add other services here as previously defined
@@ -255,6 +273,13 @@ export interface ServicePrice {
       Auth0: [
         "Free for up to 7,500 MAUs",
         "$0.07 per MAU beyond 7,500 users (B2C Essentials plan)",
+      ],
+      "FusionAuth Community": [
+        "Community Edition is free for unlimited MAUs",
+      ],
+      "FusionAuth Essentials": [
+        "Free for up to 10,000 MAUs",
+        "*Pricing varies beyond, highly suggest calling sales",
       ],
       // Add other services here as needed
     };
