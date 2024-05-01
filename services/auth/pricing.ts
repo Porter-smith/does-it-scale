@@ -109,7 +109,7 @@ export interface ServicePrice {
     // Updated: 4/21/24
     
     export function calculateFirebaseAuthCost(users: number): number {
-      let cost = 850;
+      let cost = 0;
       const rate50kTo100k = 0.0055;
       const rate100kTo1m = 0.0046;
       const rate1mTo10m = 0.0032;
