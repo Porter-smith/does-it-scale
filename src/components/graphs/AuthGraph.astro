@@ -1,0 +1,227 @@
+---
+import { Icon } from "astro-icon/components";
+import Link from "@/components/Link.astro";
+import {
+    type ServicePrice,
+    prices,
+    extractSeriesData,
+} from "@services/auth/pricing";
+
+const seriesData = extractSeriesData(prices);
+---
+
+<div class="max-w-6xl w-full bg-card rounded-lg shadow dark:bg-card">
+    <div class="p-4 md:p-6 pb-0 md:pb-0">
+        <div>
+            <div class="flex flex-col gap-5">
+                <h2 class="text-center mt-[20px] font-normal">
+                    Authenticatication Services
+                </h2>
+                <div class="flex justify-center w-full">
+                    <div
+                        class="flex flex-wrap max-w-[500px] gap-5 justify-center"
+                    >
+                        {
+                            prices.map((service) => (
+                                <Link
+                                    iconName={service.iconName}
+                                    name={service.service}
+                                />
+                            ))
+                        }
+                    </div>
+                </div>
+                <p class="text-center mt-[20px] font-normal">
+                    Monthly active users pricing per month
+                </p>
+            </div>
+
+            <div
+                data-series={JSON.stringify(seriesData)}
+                id="auth-labels-chart"
+                class="px-2.5"
+                style="height: 402px;"
+            >
+            </div>
+            <div
+                class="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between mt-5 p-4 md:p-6 pt-0 md:pt-0"
+            >
+                <div class="flex justify-between items-center pt-5">
+                    <!-- Button -->
+
+                    <!-- Dropdown menu -->
+                    <div
+                        id="lastDaysdropdown"
+                        class="z-10 hidden bg-card divide-y divide-border rounded-lg shadow w-44 dark:bg-card"
+                    >
+                        <ul
+                            class="py-2 text-sm text-muted dark:text-muted-foreground"
+                            aria-labelledby="dropdownDefaultButton"
+                        >
+                            <li>
+                                <a
+                                    href="#"
+                                    class="block px-4 py-2 hover:bg-accent dark:hover:bg-accent dark:hover:text-accent-foreground"
+                                    >Yesterday</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="#"
+                                    class="block px-4 py-2 hover:bg-accent dark:hover:bg-accent dark:hover:text-accent-foreground"
+                                    >Today</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="#"
+                                    class="block px-4 py-2 hover:bg-accent dark:hover:bg-accent dark:hover:text-accent-foreground"
+                                    >Last 7 days</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="#"
+                                    class="block px-4 py-2 hover:bg-accent dark:hover:bg-accent dark:hover:text-accent-foreground"
+                                    >Last 30 days</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="#"
+                                    class="block px-4 py-2 hover:bg-accent dark:hover:bg-accent dark:hover:text-accent-foreground"
+                                    >Last 90 days</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            import ApexCharts from "apexcharts";
+            const responsiveOptions = [
+                {
+                    breakpoint: 480, // Mobile devices
+                    options: {
+                        chart: {
+                            zoom: {
+                                enabled: false,
+                            },
+                        },
+                    },
+                },
+            ];
+            // Configuring ApexCharts options
+            const options: ApexCharts.ApexOptions = {
+                chart: {
+                    height: "387px",
+                    width: "100%",
+                    type: "area",
+                    fontFamily: "Inter, sans-serif",
+                    dropShadow: {
+                        enabled: false,
+                    },
+                    toolbar: {
+                        show: false,
+                    },
+                },
+                xaxis: {
+                    categories: [
+                        "5k",
+                        "10k",
+                        "50k",
+                        "100k",
+                        "1 Million",
+                        "2 Million",
+                    ],
+                    labels: {
+                        style: {
+                            fontFamily: "Inter, sans-serif",
+                            cssClass:
+                                "text-xs font-normal fill-gray-500 dark:fill-gray-400",
+                        },
+                    },
+                    axisBorder: {
+                        show: false,
+                    },
+                    axisTicks: {
+                        show: false,
+                    },
+                },
+                yaxis: {
+                    labels: {
+                        style: {
+                            fontFamily: "Inter, sans-serif",
+                            cssClass:
+                                "text-xs font-normal fill-gray-500 dark:fill-gray-400",
+                        },
+                        formatter: function (value: number) {
+                            return "$" + value.toLocaleString(); // Add comma formatting here
+                        },
+                    },
+                },
+                series: JSON.parse(
+                    document
+                        .getElementById("auth-labels-chart")
+                        ?.getAttribute("data-series") ?? "[]",
+                ),
+                tooltip: {
+                    enabled: true,
+                    theme: "dark",
+                    x: {
+                        show: false,
+                    },
+                },
+                fill: {
+                    type: "gradient",
+                    gradient: {
+                        opacityFrom: 0.55,
+                        opacityTo: 0,
+                        shade: "#1C64F2",
+                        gradientToColors: ["#1C64F2"],
+                    },
+                },
+                dataLabels: {
+                    enabled: false,
+                },
+                stroke: {
+                    width: 6,
+                },
+                legend: {
+                    labels: {
+                        colors: "var(--card-foreground)",
+                    },
+                    show: true,
+                    position: "bottom",
+                    horizontalAlign: "center",
+                    fontSize: "14px",
+                    fontFamily: "Inter, sans-serif",
+                    markers: {
+                        width: 12,
+                        height: 12,
+                    },
+                    itemMargin: {
+                        vertical: 5,
+                    },
+                },
+                grid: {
+                    show: false,
+                },
+                responsive: responsiveOptions,
+            };
+
+            if (
+                document.getElementById("auth-labels-chart") &&
+                typeof ApexCharts !== "undefined"
+            ) {
+                const chart = new ApexCharts(
+                    document.getElementById("auth-labels-chart"),
+                    options,
+                );
+                chart.render();
+            }
+        </script>
+        <style></style>
+    </div>
+</div>

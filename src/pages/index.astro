@@ -1,0 +1,74 @@
+---
+import "@/css/global.css";
+import EmailTable from "@/components/tables/EmailTable.astro";
+import EmailGraph from "@/components/graphs/EmailGraph.astro";
+import AuthGraph from "@/components/graphs/AuthGraph.astro";
+import AuthTable from "@/components/tables/AuthTable.astro";
+interface Props {
+	title: string;
+	description: string;
+}
+---
+
+<!doctype html>
+<html lang="en" data-theme="business">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<script
+			defer
+			src="https://kit.fontawesome.com/d68c1e9ba0.js"
+			crossorigin="anonymous"></script>
+	</head>
+	<body class="dark">
+		<div
+			class="flex pt-[100px] justify-center text-center gap-[50px] lg:gap-[200px] lg:flex-row flex-col px-3"
+		>
+			<div>
+				<h3>Email</h3>
+				<h4>Empowering your communication</h4>
+			</div>
+		</div>
+		<div class="flex justify-center pt-[100px] px-3">
+			<EmailGraph />
+		</div>
+		<div
+			class="w-full p-4 grid place-items-center pt-[100px]"
+			style="margin-left: auto; margin-right: auto;"
+		>
+			<EmailTable />
+		</div>
+		<div
+			class="w-full p-4 grid place-items-center gap-4"
+			style="margin-left: auto; margin-right: auto;"
+		>
+		</div>
+		<div
+			class="flex pt-[100px] justify-center text-center gap-[50px] lg:gap-[200px] lg:flex-row flex-col px-3"
+		>
+			<div>
+				<h3>Authentication</h3>
+				<h4>You shall not pass!</h4>
+			</div>
+		</div>
+		<div class="flex justify-center pt-[100px] px-3">
+			<AuthGraph />
+		</div>
+		<div
+			class="w-full p-4 grid place-items-center pt-[100px]"
+			style="margin-left: auto; margin-right: auto;"
+		>
+			<AuthTable />
+		</div>
+		<div
+			class="w-full p-4 grid place-items-center gap-4"
+			style="margin-left: auto; margin-right: auto;"
+		>
+			<!-- <AuthCard /> -->
+		</div>
+	</body>
+
+	<!-- <FancyFooter /> -->
+</html>
