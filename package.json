@@ -12,9 +12,13 @@
   "dependencies": {
     "@astrojs/check": "^0.5.10",
     "@astrojs/tailwind": "^5.1.0",
+    "@tailwindcss/typography": "^0.5.13",
+    "apexcharts": "^3.49.0",
     "astro": "^4.7.0",
     "astro-icon": "^1.1.0",
+    "daisyui": "^4.10.2",
     "tailwindcss": "^3.4.3",
+    "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.4.5"
   }
 }

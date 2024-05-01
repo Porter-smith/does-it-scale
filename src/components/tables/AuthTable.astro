@@ -1,5 +1,5 @@
 ---
-import AuthLink from "../Link.astro";
+import AuthLink from "@/components/Link.astro";
 import { pricingBreakdown, prices } from "@services/auth/pricing";
 import { EDIT_EMAIL } from "@/constants";
 ---
@@ -89,28 +89,32 @@ import { EDIT_EMAIL } from "@/constants";
     </table>
 </div>
 
-{prices.map((service) => (
-    <dialog id={`${service.service}-modal`} class="modal">
-        <div class="modal-box">
-            <h2 class="font-bold text-lg">Pricing Breakdown for {service.service}</h2>
-            <ul class="py-4">
-                {pricingBreakdown[service.service].map((item) => (
-                    <li>{item}</li>
-                ))}
-            </ul>
-            <form method="dialog" class="modal-backdrop">
-                <button class="btn">Close</bu            </form>
-        </div>
-    </dialog>
-))}
-
+{
+    prices.map((service) => (
+        <dialog id={`${service.service}-modal`} class="modal">
+            <div class="modal-box">
+                <h2 class="font-bold text-lg">
+                    Pricing Breakdown for {service.service}
+                </h2>
+                <ul class="py-4">
+                    {pricingBreakdown[service.service]?.map((item) => (
+                        <li>{item}</li>
+                    ))}
+                </ul>
+                <form method="dialog" class="modal-backdrop">
+                    <button class="btn">Close</button>
+                </form>
+            </div>
+        </dialog>
+    ))
+}
 <script>
     // Close the modal when clicking outside the modal content
-    const modals = document.querySelectorAll('.modal');
+    const modals = document.querySelectorAll(".modal");
     modals.forEach((modal) => {
-        window.addEventListener('click', (event) => {
+        window.addEventListener("click", (event) => {
             if (event.target === modal) {
-                modal.close();
+                (modal as HTMLDialogElement).close();
             }
         });
     });
