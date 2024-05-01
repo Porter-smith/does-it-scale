@@ -109,7 +109,7 @@ export interface ServicePrice {
     // Updated: 4/21/24
     
     export function calculateFirebaseAuthCost(users: number): number {
-      let cost = 0;
+      let cost = 850;
       const rate50kTo100k = 0.0055;
       const rate100kTo1m = 0.0046;
       const rate1mTo10m = 0.0032;
@@ -223,8 +223,8 @@ export function calculateFusionAuthEssentialsCost(users: number): number {
         pricingPage: "https://auth0.com/pricing", // Add this line
       },
       {
-        service: "FusionAuth Community",
-        iconName: "fusionauth",
+        service: "FusionAuthCommunity",
+        iconName: "fusionauthcommunity",
         users5k: calculateFusionAuthCommunityCost(5000),
         users10k: calculateFusionAuthCommunityCost(10000),
         users50k: calculateFusionAuthCommunityCost(50000),
