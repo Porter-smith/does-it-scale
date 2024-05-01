@@ -173,6 +173,23 @@ export function calculateFusionAuthEssentialsCost(users: number): number {
 
   return cost;
 }
+
+
+// Using information from https://workos.com/pricing
+// Updated: 4/30/24
+function calculateWorkOSCost(users: number): number {
+  const freeLimit = 1000000; // Free for up to 1,000,000 MAUs
+  const ratePerAdditionalMillion = 2500; // $2,500 per additional million users
+
+  let cost = 0;
+
+  if (users > freeLimit) {
+    const additionalMillions = Math.ceil((users - freeLimit) / 1000000);
+    cost = additionalMillions * ratePerAdditionalMillion;
+  }
+
+  return cost;
+}
     export const prices: ServicePrice[] = [
       {
         service: "Firebase Auth",
@@ -223,7 +240,7 @@ export function calculateFusionAuthEssentialsCost(users: number): number {
         pricingPage: "https://auth0.com/pricing", // Add this line
       },
       {
-        service: "FusionAuthCommunity",
+        service: "FusionAuth Community",
         iconName: "fusionauth",
         users5k: calculateFusionAuthCommunityCost(5000),
         users10k: calculateFusionAuthCommunityCost(10000),
@@ -245,6 +262,18 @@ export function calculateFusionAuthEssentialsCost(users: number): number {
         users2m: calculateFusionAuthEssentialsCost(2000000),
         color: "#0ea5e9",
         pricingPage: "https://fusionauth.io/pricing?step=plan&hosting=basic-cloud",
+      },
+      {
+        service: "WorkOS",
+        iconName: "workos",
+        users5k: calculateWorkOSCost(5000),
+        users10k: calculateWorkOSCost(10000),
+        users50k: calculateWorkOSCost(50000),
+        users100k: calculateWorkOSCost(100000),
+        users1m: calculateWorkOSCost(1000000),
+        users2m: calculateWorkOSCost(2000000),
+        color: "#6969f1",
+        pricingPage: "https://workos.com/pricing",
       },
       
       
@@ -285,6 +314,10 @@ export function calculateFusionAuthEssentialsCost(users: number): number {
         "$100 per additional 10,000 MAUs up to 1,000,000",
         "$20 per additional 10,000 MAUs beyond 1,000,000",
         "Hosting is an additional cost (e.g., $37/month for FusionAuth Basic hosting), self-hosting is also an option",
+      ],
+      WorkOS: [
+        "Free for up to 1,000,000 MAUs",
+        "$2,500 per additional million users",
       ],
       // Add other services here as needed
     };
