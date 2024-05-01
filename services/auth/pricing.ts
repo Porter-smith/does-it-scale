@@ -224,7 +224,7 @@ export function calculateFusionAuthEssentialsCost(users: number): number {
       },
       {
         service: "FusionAuthCommunity",
-        iconName: "fusionauthcommunity",
+        iconName: "fusionauth",
         users5k: calculateFusionAuthCommunityCost(5000),
         users10k: calculateFusionAuthCommunityCost(10000),
         users50k: calculateFusionAuthCommunityCost(50000),
