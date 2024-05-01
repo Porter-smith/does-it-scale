@@ -136,11 +136,23 @@ export interface ServicePrice {
 
 
  
+// https://account.fusionauth.io/pricing-calculator/add-deployment
+// Updated: 4/30/24
+function getDeploymentCost(users: number): number {
+  if (users <= 200000) {
+    return 35; // Medium deployment, up to 200,000 users
+  } else if (users <= 750000) {
+    return 150; // Large deployment, up to 750,000 users
+  } else {
+    return 300; // X-Large deployment, over 750,000 users
+  }
+}
+
 // https://fusionauth.io/pricing?step=plan&hosting=basic-cloud
 // Updated: 4/30/24
 export function calculateFusionAuthCommunityCost(users: number): number {
-  const basicHostingCost = 37; // $37 per month for Basic hosting
-  return basicHostingCost;
+  const deploymentCost = getDeploymentCost(users);
+  return deploymentCost;
 }
 
 // https://fusionauth.io/pricing?step=plan&hosting=basic-cloud
@@ -151,7 +163,7 @@ export function calculateFusionAuthEssentialsCost(users: number): number {
   const rate10kTo100k = 175; // $175 per additional 10,000 MAUs up to 100,000
   const rate100kTo1m = 100; // $100 per additional 10,000 MAUs up to 1,000,000
   const rateAbove1m = 20; // $20 per additional 10,000 MAUs beyond 1,000,000
-  const basicHostingCost = 37; // $37 per month for Basic hosting
+  const deploymentCost = getDeploymentCost(users);
 
   let cost = baseCost;
   let mauPrice = 0;
@@ -169,11 +181,10 @@ export function calculateFusionAuthEssentialsCost(users: number): number {
   }
 
   cost += mauPrice;
-  cost += basicHostingCost;
+  cost += deploymentCost;
 
   return cost;
 }
-
 
 // Using information from https://workos.com/pricing
 // Updated: 4/30/24
@@ -304,8 +315,12 @@ function calculateWorkOSCost(users: number): number {
         "$0.07 per MAU beyond 7,500 users (B2C Essentials plan)",
       ],
       "FusionAuth Community": [
-        "$37 a month for FusionAuth Basic hosting (self hosting is also an option)",
         "Community Edition is free for unlimited MAUs",
+        "Deployment costs on FusionAuth Basic hosting:",
+        "- Medium (up to 200,000 users): $35 per month",
+        "- Large (up to 750,000 users): $150 per month",
+        "- X-Large (over 750,000 users): $300 per month",
+        "Self-hosting is also an option",
       ],
       "FusionAuth Essentials": [
         "Free for up to 10,000 MAUs",
@@ -313,7 +328,11 @@ function calculateWorkOSCost(users: number): number {
         "$175 per additional 10,000 MAUs up to 100,000",
         "$100 per additional 10,000 MAUs up to 1,000,000",
         "$20 per additional 10,000 MAUs beyond 1,000,000",
-        "Hosting is an additional cost (e.g., $37/month for FusionAuth Basic hosting), self-hosting is also an option",
+        "Deployment costs on FusionAuth Basic hosting:",
+        "- Medium (up to 200,000 users): $35 per month",
+        "- Large (up to 750,000 users): $150 per month",
+        "- X-Large (over 750,000 users): $300 per month",
+        "Self-hosting is also an option",
       ],
       WorkOS: [
         "Free for up to 1,000,000 MAUs",
