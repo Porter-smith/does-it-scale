@@ -3,8 +3,18 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-      "@services/*": ["services/*"]
+      "@/*": [
+        "src/*"
+      ],
+      "@services/*": [
+        "services/*"
+      ]
     }
-  }
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "tests/browser",
+    "playwright.config.ts"
+  ]
 }

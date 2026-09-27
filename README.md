@@ -103,3 +103,18 @@ To update an existing auth provider:
 ## More Information
 
 Please note that while the pricing and authentication algorithms are open source, the frontend code is maintained separately and is not open sourced.
+
+## LLM token comparison
+
+The local test UI also compares six LLM providers using the public OpenRouter model catalog. Rates are OpenRouter USD per million input/output tokens, not direct-provider quotes. The existing email and authentication comparisons remain available.
+
+Use Node 22 and pnpm 8 (the lockfile uses version 6). Run `pnpm install`, `pnpm test`, and `pnpm build`. For this task's preview, run `pnpm dev --host 0.0.0.0 --port 4329` and open `http://localhost:4329/#llm`.
+
+- `services/llm/pricing.ts` defines the compared models, rate conversion, and drop detection.
+- `pnpm prices:update` updates the committed public fallback snapshot. It requires no API key.
+- The browser refreshes rates on each visit, on demand, and every 15 minutes while open. Failed or incomplete responses retain the last successful snapshot and show a notice.
+- All six models are watched initially. Watches, the last successful prices, and up to 50 drop notices persist in this browser's local storage. Uncheck a model to stop watching it. Clear notices removes notices without resetting the price baseline.
+- Monitoring is browser-local: no background worker, server notification service, or phone push is configured. Storage failures leave session-only notices and show a message.
+- Cheapest input and output rates are highlighted separately. The monthly estimate uses the entered usage; the chart compares total token volume at an explicit 4:1 input/output ratio. Quality, caching, batch pricing, non-token fees, and context tiers are outside this comparison.
+
+Browser regression tests: `PLAYWRIGHT_BROWSERS_PATH=node_modules/.cache/playwright pnpm exec playwright install chromium`, then `PLAYWRIGHT_BROWSERS_PATH=node_modules/.cache/playwright pnpm test:browser`. These use local pages and controlled pricing responses to verify clicks, watch persistence, a simulated price drop, deduplication, source failure, and storage failure. No test notices are written to a user's browser.

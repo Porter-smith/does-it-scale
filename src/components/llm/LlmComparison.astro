@@ -1,0 +1,52 @@
+---
+import { providers, PRICE_SOURCE } from "@services/llm/pricing";
+import snapshot from "@services/llm/snapshot.json";
+---
+<section id="llm" aria-labelledby="llm-heading" class="w-full max-w-6xl mx-auto px-3 pt-[100px] pb-12">
+  <div class="text-center mb-12">
+    <h3 id="llm-heading">LLM Providers</h3>
+    <h4>Make every token count</h4>
+  </div>
+  <div class="bg-card rounded-lg shadow p-4 md:p-6">
+    <h2 class="text-center mt-5 font-normal">Compare token prices</h2>
+    <p class="text-center text-sm text-muted-foreground mt-4">OpenRouter rates in USD per 1M text tokens. Compare these six models at the same usage.</p>
+    <div class="flex flex-wrap justify-center gap-5 my-6">
+      {providers.map(provider => <span class="text-sm"><span style={`color: ${provider.color}`} aria-hidden="true">●</span> {provider.provider}</span>)}
+    </div>
+    <div class="flex flex-wrap items-end justify-center gap-4 my-6">
+      <label class="text-sm">Monthly input tokens
+        <input id="llm-input" class="input input-bordered block mt-2 w-full" type="number" min="0" max="1000000000000" step="1" value="1000000" />
+      </label>
+      <label class="text-sm">Monthly output tokens
+        <input id="llm-output" class="input input-bordered block mt-2 w-full" type="number" min="0" max="1000000000000" step="1" value="250000" />
+      </label>
+      <button id="llm-refresh" class="btn">Refresh LLM prices</button>
+    </div>
+    <p id="llm-updated" class="text-center text-sm text-muted-foreground">Price snapshot: {snapshot.checkedAt}</p>
+    <p id="llm-status" role="status" class="text-center text-sm mt-3"></p>
+    <p id="llm-storage" role="status" class="text-center text-sm mt-3"></p>
+    <div id="llm-cheapest" class="border border-primary rounded-lg p-4 my-6 text-center" aria-live="polite"></div>
+    <p class="text-center text-sm text-muted-foreground">Monthly cost as usage scales · 4 input tokens per output token</p>
+    <div id="llm-chart" aria-label="LLM monthly cost comparison chart" class="mt-4 min-h-[320px]"></div>
+    <div class="overflow-x-auto max-w-full mx-auto mt-6">
+      <table class="w-full text-sm text-foreground bg-card border-collapse rounded-lg">
+        <caption class="text-left py-3 text-muted-foreground">Input and output rates per 1M tokens, sorted by your monthly estimate.</caption>
+        <thead class="text-xs uppercase">
+          <tr><th scope="col" class="py-3 px-4 text-left">Provider / Model</th><th scope="col" class="py-3 px-4">Input</th><th scope="col" class="py-3 px-4">Output</th><th scope="col" class="py-3 px-4">Monthly estimate</th><th scope="col" class="py-3 px-4">Watch price</th></tr>
+        </thead>
+        <tbody id="llm-rows"></tbody>
+      </table>
+    </div>
+    <p class="text-sm text-muted-foreground mt-5">Cheapest means lowest cost among these six models, not a quality ranking. Excludes caching, batch discounts, non-token fees, and context tiers. <a class="underline" href={PRICE_SOURCE} target="_blank" rel="noopener noreferrer">Public price source</a>.</p>
+    <noscript><p class="mt-4">Enable JavaScript for live prices, the calculator, and price-drop notices.</p></noscript>
+  </div>
+  <div class="bg-card rounded-lg p-4 md:p-6 mt-6">
+    <h3 class="text-xl">Price-drop notices</h3>
+    <p class="text-sm text-muted-foreground mt-2">Watched models are checked on each visit and every 15 minutes while this page is open. Watches and notices stay in this browser. All six models are watched initially.</p>
+    <ul id="llm-notices" class="mt-4 space-y-3" aria-live="polite"></ul>
+    <button id="llm-clear" class="btn btn-sm mt-4">Clear notices</button>
+  </div>
+</section>
+<script>
+  import "./comparison";
+</script>

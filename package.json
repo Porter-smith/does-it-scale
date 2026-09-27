@@ -7,7 +7,10 @@
     "start": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test": "tsx --test tests/*.test.ts",
+    "prices:update": "tsx scripts/update-llm-prices.ts",
+    "test:browser": "playwright test"
   },
   "dependencies": {
     "@astrojs/check": "^0.5.10",
@@ -20,5 +23,9 @@
     "tailwindcss": "^3.4.3",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.4.5"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "tsx": "^4.23.15"
   }
 }

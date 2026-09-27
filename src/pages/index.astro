@@ -4,6 +4,7 @@ import EmailTable from "@/components/tables/EmailTable.astro";
 import EmailGraph from "@/components/graphs/EmailGraph.astro";
 import AuthGraph from "@/components/graphs/AuthGraph.astro";
 import AuthTable from "@/components/tables/AuthTable.astro";
+import LlmComparison from "@/components/llm/LlmComparison.astro";
 interface Props {
 	title: string;
 	description: string;
@@ -23,11 +24,16 @@ interface Props {
 			crossorigin="anonymous"></script>
 	</head>
 	<body class="dark">
+        <nav aria-label="Price comparisons" class="flex flex-wrap justify-center gap-3 pt-8 px-3">
+            <a class="btn" href="#email">Email</a>
+            <a class="btn" href="#authentication">Authentication</a>
+            <a class="btn" href="#llm">LLM Providers</a>
+        </nav>
 		<div
 			class="flex pt-[100px] justify-center text-center gap-[50px] lg:gap-[200px] lg:flex-row flex-col px-3"
 		>
 			<div>
-				<h3>Email</h3>
+				<h3 id="email">Email</h3>
 				<h4>Empowering your communication</h4>
 			</div>
 		</div>
@@ -49,7 +55,7 @@ interface Props {
 			class="flex pt-[100px] justify-center text-center gap-[50px] lg:gap-[200px] lg:flex-row flex-col px-3"
 		>
 			<div>
-				<h3>Authentication</h3>
+				<h3 id="authentication">Authentication</h3>
 				<h4>You shall not pass!</h4>
 			</div>
 		</div>
@@ -68,6 +74,7 @@ interface Props {
 		>
 			<!-- <AuthCard /> -->
 		</div>
+		<LlmComparison />
 	</body>
 
 	<!-- <FancyFooter /> -->
