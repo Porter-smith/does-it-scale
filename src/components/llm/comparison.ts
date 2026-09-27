@@ -80,9 +80,10 @@ function save() {
       "Could not save to browser storage. Watches and notices will last only for this visit.";
   }
 }
+let inputTokens = Number(input.value);
+let outputTokens = Number(output.value);
+
 function render() {
-  const inputTokens = Number(input.value);
-  const outputTokens = Number(output.value);
   const sorted = [...state.prices].sort(
     (a, b) =>
       monthlyCost(a, inputTokens, outputTokens) -
@@ -134,6 +135,8 @@ function renderUsage() {
     return;
   }
   status.textContent = "";
+  inputTokens = Number(input.value);
+  outputTokens = Number(output.value);
   render();
 }
 async function checkPrices() {

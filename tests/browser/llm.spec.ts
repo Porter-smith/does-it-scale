@@ -117,6 +117,8 @@ test("unavailable browser storage keeps the comparison usable", async ({
   await expect(page.locator("#llm-rows tr")).toHaveCount(6);
   await page.getByLabel("Monthly input tokens").fill("-1");
   await expect(page.locator("#llm-status")).toContainText("Enter token counts");
+  await page.getByRole("checkbox", { name: "Watch Mistral Nemo", exact: true }).uncheck();
+  await expect(page.locator("#llm-cheapest")).toContainText("$0.0265");
   await page.getByLabel("Monthly input tokens").fill("1000000");
   await expect(page.locator("#llm-cheapest")).toContainText("$0.0265");
 });

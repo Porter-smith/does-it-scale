@@ -10,7 +10,7 @@
     "astro": "astro",
     "test": "tsx --test tests/*.test.ts",
     "prices:update": "tsx scripts/update-llm-prices.ts",
-    "test:browser": "playwright test"
+    "test:browser": "tsc -p tsconfig.browser.json && playwright test"
   },
   "dependencies": {
     "@astrojs/check": "^0.5.10",
@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.63.0",
+    "@types/node": "22",
     "tsx": "^4.23.15"
   }
 }
